@@ -1,0 +1,38 @@
+${yamlencode({
+"apiVersion": "k8s.chkk.io/v1beta1",
+"kind": "ChkkAgent",
+"metadata": {
+  "name": "chkk-agent",
+  "namespace": "${namespace}",
+    }
+"spec": {
+    "global": merge(
+        contains(keys(filter), "rules") ? { 
+            "filter": yamlencode(filter),
+            } : {},
+        contains(keys(chkk_agent_config.secret), "accessToken") ? {
+            "credentials": {
+                "accessToken": chkk_agent_config.secret.accessToken,
+            },
+            } : {},
+        contains(keys(chkk_agent_config.secret), "keyName") && contains(keys(chkk_agent_config.secret), "secretName") ? {
+            "credentials": {
+                "accessTokenSecret": {
+                    "keyName": chkk_agent_config.secret.keyName,
+                    "secretName": chkk_agent_config.secret.secretName,
+                },
+            },
+            } : {},
+        ),
+    "agentOverride":  merge(
+                contains(keys(chkk_agent_config.serviceAccount), "create") ?
+                    {
+                        "createRbac": chkk_agent_config.serviceAccount.create,
+                    } : {},
+                contains(keys(chkk_agent_config.serviceAccount), "serviceAccountName") ? 
+                    { 
+                        "serviceAccountName": chkk_agent_config.serviceAccount.name,
+                    } : {},
+                 )
+    }
+})}
