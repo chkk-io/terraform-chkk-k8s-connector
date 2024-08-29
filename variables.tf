@@ -24,15 +24,22 @@ variable "filter" {
 
 variable "chkk_operator_config" {
   description = "Values for the chkk-operator Helm chart"
-  type        = map(any)
   default     = {}
 }
 
 variable "chkk_agent_config" {
   description = "Override the default chkk-agent config"
-  type        = map(any)
-  default = {
-    "serviceAccount" = {}
-    "secret"         = {}
-  }
+  type = object({
+    secret = optional(object({
+      secretName = string
+      keyName    = string
+    }))
+    serviceAccount = optional(object({
+      create = bool
+      name   = optional(string)
+      }), {
+      create = true
+    })
+  })
+  default = {}
 }
