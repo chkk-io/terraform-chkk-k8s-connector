@@ -1,6 +1,6 @@
 ## Chkk K8s Connector Terraform Module
 
-This Terraform module simplfies the creation of a Chkk K8s Connector.
+This Terraform module simplifies the creation of a Chkk K8s Connector.
 
 ## Providers
 
@@ -13,14 +13,14 @@ This Terraform module simplfies the creation of a Chkk K8s Connector.
 The following snippet will deploy the Chkk Operator with the specified access token. The operator will install the Chkk K8s Connector in the namespace `chkk-system`. The specified access token will be stored in a newly created secret resource and will be mounted in the Chkk Operator and the ChkkAgent resources.
 ```
 module "chkk_k8s_connector" {
-  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.0"
+  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.1"
 
   create_namespace = true
   namespace        = "chkk-system"
 
   chkk_operator_config = {
     secret = {
-      chkkAccessToken : <TOKEN>
+      chkkAccessToken = <TOKEN>
     }
   }
 }
@@ -29,16 +29,18 @@ module "chkk_k8s_connector" {
 The following snippet will deploy the Chkk Operator using the `chkk-operator-secret` secret object. The operator will install the Chkk K8s Connector in the namespace `chkk-system`. The secret will be mounted in both the Chkk Operator and the ChkkAgent resource.
 ```
 module "chkk_k8s_connector" {
-  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.0"
+  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.1"
 
   create_namespace = true
   namespace        = "chkk-system"
 
   chkk_operator_config = {
     secret = {
-      create : false,
-      secretName : chkk-operator-secret,
-      keyName : access-token
+      create = false,
+      ref = {
+        secretName = chkk-operator-secret,
+        keyName = accessToken
+      }
     }
   }
 }
@@ -47,23 +49,25 @@ module "chkk_k8s_connector" {
 The following snippet will deploy the Chkk Operator using the `chkk-operator-secret` secret object. The operator will install the Chkk K8s Connector in the namespace `chkk-system`. The `chkk-operator-secret` secret will be mounted in the Chkk Operator and `chkk-agent-secret` will be used in the ChkkAgent resource.
 ```
 module "chkk_k8s_connector" {
-  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.0"
+  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.1"
 
   create_namespace = true
   namespace        = "chkk-system"
 
   chkk_operator_config = {
     secret = {
-      create : false,
-      secretName : chkk-operator-secret,
-      keyName : accessToken
+      create = false,
+      ref = {
+        secretName = chkk-operator-secret,
+        keyName = accessToken
+      }
     }
   }
 
   chkk_agent_config = {
     secret = {
-      secretName : chkk-agent-secret,
-      keyName : accessToken
+      secretName = chkk-agent-secret,
+      keyName = accessToken
     }
   }
 }
@@ -72,18 +76,18 @@ module "chkk_k8s_connector" {
 The following snippet will deploy the Chkk Operator with the specified access token and a mounted Service Account. The operator will install the Chkk K8s Connector in the namespace `chkk-system`. The Service Account `chkk-operator-custom-sa` will be used for the Chkk Operator and a new Service Account will be created for the ChkkAgent resource.
 ```
 module "chkk_k8s_connector" {
-  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.0"
+  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.1"
 
   create_namespace = true
   namespace        = "chkk-system"
 
   chkk_operator_config = {
     secret = {
-      chkkAccessToken : <TOKEN>
+      chkkAccessToken = <TOKEN>
     }
     serviceAccount = {
-      create : true,
-      name : chkk-operator-custom-sa
+      create = true,
+      name = chkk-operator-custom-sa
     }
   }
 }
@@ -92,25 +96,25 @@ module "chkk_k8s_connector" {
 The following snippet will deploy the Chkk Operator with the specified access token and mounted Service Accounts. The operator will install the Chkk K8s Connector in the namespace `chkk-system`. The Service Account `chkk-operator-custom-sa` will be used for the Chkk Operator and the Service Account `chkk-agent-custom-sa` will be used for the ChkkAgent resource. No new Service Accounts will be created.
 ```
 module "chkk_k8s_connector" {
-  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.0"
+  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.1"
 
   create_namespace = true
   namespace        = "chkk-system"
 
   chkk_operator_config = {
     secret = {
-      chkkAccessToken : <TOKEN>
+      chkkAccessToken = <TOKEN>
     }
     serviceAccount = {
-      create : false,
-      name : chkk-operator-custom-sa
+      create = false,
+      name = chkk-operator-custom-sa
     }
   }
 
   chkk_agent_config = {
     serviceAccount = {
-      create : false,
-      name : chkk-agent-custom-sa
+      create = false,
+      name = chkk-agent-custom-sa
     }
   }
 }
@@ -130,8 +134,8 @@ The module accepts following variables: <br>
 | chkk\_operator\_config.secret | Secret object for Chkk Operator | `map` | {} | no |
 | chkk\_operator\_config.secret.create | Whether to create secret resource or use existing resource | `boolean` | true | no |
 | chkk\_operator\_config.secret.accessToken | If create is set to true, this value will be used as secret | `string` | "" | no |
-| chkk\_operator\_config.secret.secretName | If create is set to false, this should be the secret object resource name | `string` | "" | no |
-| chkk\_operator\_config.secret.keyName | If create is set to false, this should be the secret object key name | `string` | "" | no |
+| chkk\_operator\_config.secret.ref.secretName | If create is set to false, this should be the secret object resource name | `string` | "" | no |
+| chkk\_operator\_config.secret.ref.keyName | If create is set to false, this should be the secret object key name | `string` | "" | no |
 | chkk\_operator\_config.serviceAccount | Service Account object for Chkk Operator | `map` | {} | no |
 | chkk\_operator\_config.serviceAccount.create | Whether to create service account resource or use an existing resource | `boolean` | true | no |
 | chkk\_operator\_config.serviceAccount.name | Name for the service account | `string` | chkk-operator-sa | no |
