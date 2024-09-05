@@ -4,7 +4,7 @@ ${yamlencode({
 "metadata": {
   "name": "chkk-agent",
   "namespace": "${namespace}",
-    }
+    },
 "spec": {
     "global": merge(
         contains(keys(filter), "rules") ? { 
@@ -27,6 +27,12 @@ ${yamlencode({
                 },
                 } : {}
             : {},
+        cluster_name != "" ? {
+            "clusterName": cluster_name,
+            } : {},
+        cluster_environment != "" ? {
+            "clusterEnvironment": cluster_environment,
+            } : {},
         ),
     "agentOverride":  merge(
                 contains(keys(chkk_agent_config.serviceAccount), "create") ?
