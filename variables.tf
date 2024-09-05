@@ -43,3 +43,15 @@ variable "chkk_agent_config" {
   })
   default = {}
 }
+
+variable "cluster_name" {
+  description = "Name of the cluster"
+  type        = string
+  default     = ""
+}
+
+variable "cluster_environment" {
+  description = "Environment of the cluster"
+  type        = string
+  default     = ""
+}
