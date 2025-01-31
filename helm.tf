@@ -4,10 +4,11 @@ resource "helm_release" "chkk_operator" {
   name             = var.release_name
   repository       = "https://helm.chkk.io"
   chart            = "chkk-operator"
+  version          = var.chart_version != "" ? var.chart_version : null
   namespace        = var.namespace
   create_namespace = var.create_namespace
 
-   values = [
+  values = [
     yamlencode(var.chkk_operator_config)
   ]
 }
