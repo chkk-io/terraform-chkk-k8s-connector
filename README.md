@@ -15,7 +15,7 @@ The following snippet will deploy the Chkk Operator with the specified access to
 
 ```
 module "chkk_k8s_connector" {
-  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.3"
+  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.4"
 
   create_namespace = true
   namespace        = "chkk-system"
@@ -32,7 +32,7 @@ The following snippet will deploy the Chkk Operator using the `chkk-operator-sec
 
 ```
 module "chkk_k8s_connector" {
-  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.3"
+  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.4"
 
   create_namespace = true
   namespace        = "chkk-system"
@@ -53,7 +53,7 @@ The following snippet will deploy the Chkk Operator using the `chkk-operator-sec
 
 ```
 module "chkk_k8s_connector" {
-  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.3"
+  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.4"
 
   create_namespace = true
   namespace        = "chkk-system"
@@ -81,7 +81,7 @@ The following snippet will deploy the Chkk Operator with the specified access to
 
 ```
 module "chkk_k8s_connector" {
-  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.3"
+  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.4"
 
   create_namespace = true
   namespace        = "chkk-system"
@@ -102,7 +102,7 @@ The following snippet will deploy the Chkk Operator with the specified access to
 
 ```
 module "chkk_k8s_connector" {
-  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.3"
+  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.4"
 
   create_namespace = true
   namespace        = "chkk-system"
@@ -130,7 +130,7 @@ The following snippet will deploy the Chkk Operator with the specified access to
 
 ```
 module "chkk_k8s_connector" {
-  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.3"
+  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.4"
 
   create_namespace = true
   namespace        = "chkk-system"
@@ -154,6 +154,7 @@ The module accepts following variables: <br>
 |------|-------------|------|---------|:--------:|
 | release_name | The name of the helm release | `string` | chkk-operator | no |
 | namespace | The namespace to deploy resources | `string` | chkk-system | no |
+| chart_version | The version of the helm chart to deploy | `string` | n/a | no |
 | create\_namespace | Whether to create namespace if it doesn't exist | `bool` | true | no |
 | filter | Override the default filter for the ChkkAgent| `string` | n\a | no |
 | cluster_name | Override the default cluster name for the ChkkAgent | `string` | n\a | no |

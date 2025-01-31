@@ -10,6 +10,12 @@ variable "namespace" {
   default     = "chkk-system"
 }
 
+variable "chart_version" {
+  description = "Version of the Helm chart"
+  type        = string
+  default     = ""
+}
+
 variable "create_namespace" {
   description = "Create the namespace if it does not exist."
   type        = bool
