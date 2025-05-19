@@ -46,6 +46,14 @@ variable "chkk_agent_config" {
       }), {
       create = true
     })
+    agent_image = optional(object({
+      repository = string
+      tag        = string
+    }))
+    manager_image = optional(object({
+      repository = string
+      tag        = string
+    }))
   })
   default = {}
 }

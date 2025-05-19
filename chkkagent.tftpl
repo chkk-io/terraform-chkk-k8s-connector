@@ -35,14 +35,60 @@ ${yamlencode({
             } : {},
         ),
     "agentOverride":  merge(
-                contains(keys(chkk_agent_config.serviceAccount), "create") ?
-                    {
-                        "createRbac": chkk_agent_config.serviceAccount.create,
-                    } : {},
-                contains(keys(chkk_agent_config.serviceAccount), "name") ? 
-                    { 
-                        "serviceAccountName": chkk_agent_config.serviceAccount.name,
-                    } : {},
-                 )
+            contains(keys(chkk_agent_config.serviceAccount), "create") ?
+                {
+                    "createRbac": chkk_agent_config.serviceAccount.create,
+                } : {},
+            contains(keys(chkk_agent_config.serviceAccount), "name") ? 
+                { 
+                    "serviceAccountName": chkk_agent_config.serviceAccount.name,
+                } : {},
+
+            # ── custom agent image ──
+            contains(keys(chkk_agent_config), "agent_image") ? 
+                chkk_agent_config.agent_image != null ? 
+                    contains(keys(chkk_agent_config.agent_image), "repository") ? 
+                        contains(keys(chkk_agent_config.agent_image), "tag") ?
+                            chkk_agent_config.agent_image.repository != null ?
+                                chkk_agent_config.agent_image.repository != "" ?
+                                    chkk_agent_config.agent_image.tag != null ?
+                                        chkk_agent_config.agent_image.tag != "" ?
+                                            {
+                                                "image": {
+                                                    "name": "${chkk_agent_config.agent_image.repository}:${chkk_agent_config.agent_image.tag}"
+                                                }
+                                            }
+                                        : {}
+                                    : {}
+                                : {}
+                            : {}
+                        : {}
+                    : {}
+                : {}
+            : {},
+
+            # ── custom manager image ──
+            contains(keys(chkk_agent_config), "manager_image") ? 
+                chkk_agent_config.manager_image != null ? 
+                    contains(keys(chkk_agent_config.manager_image), "repository") ? 
+                        contains(keys(chkk_agent_config.manager_image), "tag") ?
+                            chkk_agent_config.manager_image.repository != null ?
+                                chkk_agent_config.manager_image.repository != "" ?
+                                    chkk_agent_config.manager_image.tag != null ?
+                                        chkk_agent_config.manager_image.tag != "" ?
+                                            {
+                                                "managerImage": {
+                                                    "name": "${chkk_agent_config.manager_image.repository}:${chkk_agent_config.manager_image.tag}"
+                                                }
+                                            }
+                                        : {}
+                                    : {}
+                                : {}
+                            : {}
+                        : {}
+                    : {}
+                : {}
+            : {}
+        )
     }
 })}

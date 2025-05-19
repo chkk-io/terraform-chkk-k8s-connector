@@ -146,6 +146,38 @@ module "chkk_k8s_connector" {
 }
 ```
 
+The following snippet will deploy the Chkk Kubernetes Connector with custom images for: Chkk Operator, Chkk Agent, and Chkk Agent Manager. 
+
+```
+module "chkk_k8s_connector" {
+  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.4"
+
+  create_namespace = true      # don't spam your real cluster during dry-run
+  namespace        = "chkk-system"
+
+  chkk_agent_config = {
+    agent_image = {
+      repository = "public.ecr.aws/chkk/cluster-agent"
+      tag        = "v0.1.10"
+    }
+    manager_image = {
+      repository = "public.ecr.aws/chkk/cluster-agent-manager"
+      tag        = "v0.1.10"
+    }
+  }
+
+  chkk_operator_config = {
+    secret = {
+      chkkAccessToken = <TOKEN>
+    }
+    image = {
+      repository = "public.ecr.aws/chkk/operator"
+      tag        = "v0.0.10"
+    }
+  }
+}
+```
+
 For a complete reference, see the section below.
 
 ## Inputs
@@ -176,6 +208,12 @@ The module accepts following variables: <br>
 | chkk\_agent_\_config.serviceAccount | Service Account object for ChkkAgent | `map` | {} | no |
 | chkk\_agent_\_config.serviceAccount.create | Whether to create RBAC (Service Account, Role, etc) for ChkkAgent or use an existing resource | `boolean` | true | no |
 | chkk\_agent_\_config.serviceAccount.serviceAccountName | If create is false, this should be the name of the existing Service Account | `string` | "" | no |
+| chkk\_agent_\_config.agent_image | Agent Image object for ChkkAgent | `map` | {} | no |
+| chkk\_agent_\_config.agent_image.repository | Repository for the agent image | `string` | "" | no |
+| chkk\_agent_\_config.agent_image.tag | Tag for the agent image | `string` | "" | no |
+| chkk\_agent_\_config.manager_image | Manager Image object for ChkkAgent | `map` | {} | no |
+| chkk\_agent_\_config.manager_image.repository | Repository for the manager image | `string` | "" | no |
+| chkk\_agent_\_config.manager_image.tag | Tag for the manager image | `string` | "" | no |
 
 ## Outputs
 No output.
