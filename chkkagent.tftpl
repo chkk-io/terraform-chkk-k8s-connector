@@ -35,14 +35,44 @@ ${yamlencode({
             } : {},
         ),
     "agentOverride":  merge(
-                contains(keys(chkk_agent_config.serviceAccount), "create") ?
-                    {
-                        "createRbac": chkk_agent_config.serviceAccount.create,
-                    } : {},
-                contains(keys(chkk_agent_config.serviceAccount), "name") ? 
-                    { 
-                        "serviceAccountName": chkk_agent_config.serviceAccount.name,
-                    } : {},
-                 )
+            contains(keys(chkk_agent_config.serviceAccount), "create") ?
+                {
+                    "createRbac": chkk_agent_config.serviceAccount.create,
+                } : {},
+            contains(keys(chkk_agent_config.serviceAccount), "name") ? 
+                { 
+                    "serviceAccountName": chkk_agent_config.serviceAccount.name,
+                } : {},
+
+            # ── custom agent image ──
+            contains(keys(chkk_agent_config), "agent_image") ? 
+                chkk_agent_config.agent_image != null ?
+                    contains(keys(chkk_agent_config.agent_image), "name") ?
+                        chkk_agent_config.agent_image.name != null ?
+                            {
+                                "image": {
+                                    "name": chkk_agent_config.agent_image.name
+                                }
+                            } 
+                        : {}
+                    : {} 
+                : {}
+            : {},
+
+            # ── custom manager image ──
+            contains(keys(chkk_agent_config), "manager_image") ? 
+                chkk_agent_config.manager_image != null ?
+                    contains(keys(chkk_agent_config.manager_image), "name") ?
+                        chkk_agent_config.manager_image.name != null ?
+                            {
+                                "managerImage": {
+                                    "name": chkk_agent_config.manager_image.name
+                                }
+                            } 
+                        : {}
+                    : {} 
+                : {}
+            : {},
+        )
     }
 })}
