@@ -52,6 +52,7 @@ variable "chkk_agent_config" {
     manager_image = optional(object({
       name = string
     }))
+    schedule = optional(string)
   })
   default = {}
 }

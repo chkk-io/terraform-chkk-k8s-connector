@@ -73,6 +73,14 @@ ${yamlencode({
                     : {} 
                 : {}
             : {},
+
+            # ── schedule configuration ──
+            contains(keys(chkk_agent_config), "schedule") ?
+                chkk_agent_config.schedule != null ? {
+                    "schedule": chkk_agent_config.schedule
+                } : {}
+            : {},
+
         )
     }
 })}
