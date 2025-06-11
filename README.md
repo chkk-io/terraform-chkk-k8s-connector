@@ -15,7 +15,7 @@ The following snippet will deploy the Chkk Operator with the specified access to
 
 ```
 module "chkk_k8s_connector" {
-  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.4"
+  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.6"
 
   create_namespace = true
   namespace        = "chkk-system"
@@ -32,7 +32,7 @@ The following snippet will deploy the Chkk Operator using the `chkk-operator-sec
 
 ```
 module "chkk_k8s_connector" {
-  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.4"
+  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.6"
 
   create_namespace = true
   namespace        = "chkk-system"
@@ -53,7 +53,7 @@ The following snippet will deploy the Chkk Operator using the `chkk-operator-sec
 
 ```
 module "chkk_k8s_connector" {
-  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.4"
+  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.6"
 
   create_namespace = true
   namespace        = "chkk-system"
@@ -81,7 +81,7 @@ The following snippet will deploy the Chkk Operator with the specified access to
 
 ```
 module "chkk_k8s_connector" {
-  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.4"
+  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.6"
 
   create_namespace = true
   namespace        = "chkk-system"
@@ -102,7 +102,7 @@ The following snippet will deploy the Chkk Operator with the specified access to
 
 ```
 module "chkk_k8s_connector" {
-  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.4"
+  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.6"
 
   create_namespace = true
   namespace        = "chkk-system"
@@ -130,7 +130,7 @@ The following snippet will deploy the Chkk Operator with the specified access to
 
 ```
 module "chkk_k8s_connector" {
-  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.4"
+  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.6"
 
   create_namespace = true
   namespace        = "chkk-system"
@@ -150,14 +150,14 @@ The following snippet will deploy the Chkk Kubernetes Connector with custom imag
 
 ```
 module "chkk_k8s_connector" {
-  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.4"
+  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.6"
 
   create_namespace = true     
   namespace        = "chkk-system"
 
   chkk_agent_config = {
     agent_image = {
-      repository = "public.ecr.aws/chkk/cluster-agent:v0.1.10"
+      name = "public.ecr.aws/chkk/cluster-agent:v0.1.10"
     }
     manager_image = {
       name = "public.ecr.aws/chkk/cluster-agent-manager:v0.1.10"
@@ -172,6 +172,27 @@ module "chkk_k8s_connector" {
       repository = "public.ecr.aws/chkk/operator"
       tag        = "v0.0.10"
     }
+  }
+}
+```
+
+The following snippet will deploy the Chkk Operator with a custom schedule (every 6 hours) for the ChkkAgent. The agent by default runs every 12 hours.
+
+```
+module "chkk_k8s_connector" {
+  source     = "git::https://github.com/chkk-io/terraform-chkk-k8s-connector.git?ref=v0.1.6"
+
+  create_namespace = true
+  namespace        = "chkk-system"
+
+  chkk_operator_config = {
+    secret = {
+      chkkAccessToken = <TOKEN>
+    }
+  }
+
+  chkk_agent_config = {
+    schedule = "0 */6 * * *"  # Every 6 hours
   }
 }
 ```
@@ -210,6 +231,7 @@ The module accepts following variables: <br>
 | chkk\_agent_\_config.agent_image.name | Full image name for the agent image (repository:tag) | `string` | "" | no |
 | chkk\_agent_\_config.manager_image | Manager Image object for ChkkAgent | `map` | {} | no |
 | chkk\_agent_\_config.manager_image.name | Full image name for the manager image (repository:tag) | `string` | "" | no |
+| chkk\_agent_\_config.schedule | Cron schedule for ChkkAgent execution | `string` | "" | no |
 
 ## Outputs
 No output.
